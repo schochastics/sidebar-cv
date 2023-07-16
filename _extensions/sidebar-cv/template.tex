@@ -27,23 +27,17 @@
 %	DOCUMENT DEFINITION
 %
 %============================================================================%
-
-%we use article class because we want to fully customize the page and dont use a cv template
 \documentclass[10pt,A4]{article}	
 
 
 %----------------------------------------------------------------------------------------
 %	ENCODING
 %----------------------------------------------------------------------------------------
-
-%we use utf8 since we want to build from any machine
 \usepackage[utf8]{inputenc}		
 
 %----------------------------------------------------------------------------------------
 %	LOGIC
 %----------------------------------------------------------------------------------------
-
-% provides \isempty test
 \usepackage{xifthen}
 
 %----------------------------------------------------------------------------------------
@@ -113,9 +107,6 @@
 %
 %
 %============================================================================%
-
-% returns minipage width minus two times \fboxsep
-% to keep padding included in width calculations
 \newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
 	
 
@@ -333,67 +324,6 @@
 			$endfor$
 		\end{metasection}
 		$endfor$
-
-		% \begin{metasection}{Contact}
-
-		% 	\icontext{MapMarker}{12}{Bremen, Germany}{white}\\[6pt]
-		% 	\icontext{MobilePhone}{12}{+49 176 313 *** **}{white}\\[6pt]
-		% 	\iconemail{Send}{12}{info@jankuester.com}{info@jankuester.com}{white}\\[6pt]
-		% 	\iconhref{MousePointer}{12}{http://jankuester.com/}{www.jankuester.com}{white}\\[6pt]
-		% 	\iconhref{Github}{12}{https://github.com/jankapunkt}{https://github.com/jankapunkt}{white}\\[6pt]
-		% 	\iconhref{Twitter}{12}{@Kuester\_Jan}{https://twitter.com/kuester_jan?lang=en}{white}\\[6pt]
-
-		% \end{metasection}
-
-		% %----------------------------------------------------------------------------------------
-		% %	META SECTION
-		% %----------------------------------------------------------------------------------------
-
-		% \begin{metasection}{Fields}
-
-		% 	\icontext{Code}{12}{Software Development}{white}\\
-		% 	\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\\[6pt]
-
-		% 	\icontext{CommentsO}{12}{Consulting}{white}\\
-		% 	\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
-
-		% 	\icontext{CodeFork}{12}{Project Management}{white}\\
-		% 	\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
-
-
-		% \end{metasection}
-
-
-		% \begin{metasection}{Technologies}
-
-		% 	\textcolor{white}{
-		% 		\icontext{Code}{12}{JavaScript}{white} \\[6pt]
-		% 		\icontext{Code}{12}{Meteor}{white} \\[6pt]
-		% 		\icontext{Fire}{12}{Blaze}{white} \\[6pt]
-		% 		\icontext{Database}{12}{MongoDB}{white} \\[6pt]
-		% 		\icontext{CodeFork}{12}{Git}{white} \\[6pt]
-		% 	}
-		% \end{metasection}
-
-		% \begin{metasection}{Tools}
-
-		% 	\textcolor{white}{
-		% 		\icontext{Code}{12}{Webstorm}{white} \icontext{CodeFork}{12}{SourceTree}{white}\\[6pt]
-		% 		\icontext{Terminal}{12}{Terminal}{white}  \icontext{PaintBrush}{12}{Inkscape}{white}\icontext{Cube}{12}{Blender}{white}
-		% 	}
-		% \end{metasection}
-
-		% \begin{metasection}{Activities}
-
-		% 	\textcolor{white}{\LARGE{\icon{Gamepad}{24}{white} \icon{Headphones}{24}{white}  \icon{Bicycle}{24}{white}}}
-		% \end{metasection}
-
-		% \begin{metasection}{Operating Systems}
-
-		% 	\textcolor{white}{\LARGE{\icon{Linux}{24}{white} \icon{Apple}{24}{white}  \icon{Windows}{24}{white}}}
-
-		% \end{metasection}
-
 		%---------------------------------------------------------------------------------------
 		%	QR CODE (optional)
 		%----------------------------------------------------------------------------------------
