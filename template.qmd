@@ -1,0 +1,127 @@
+---
+author: David Schoch
+title: R Developer
+pdf-engine: latexmk #other engines throw an error :(
+tagline: |
+  I create awesome Quarto extensions for everyone. Besides that I am a team lead at GESIS in Cologne, Germany for Transparent Social Analytics.
+format:
+  sidebar-cv-pdf: default
+cvimage:
+  file: myfoto.jpg
+  trim:
+    left: 100 
+    bottom: 10
+    right: 100
+    top: 0
+cvfooter:
+  left: "mr.schochastics.net"
+  right: "github.com/schochastics"
+color:
+  main: "149678" #without '#'
+  accent: FA960A
+  bgdark: 6E6E6E
+  bglight: E1E1E1
+cvfont: gillius #texlive fonts like raleway,fetamont,gillius,comfortaa
+cvmeta:
+  - name: Contact
+    items:
+      - icon: map-marker #from fontawesome5
+        text: Konstanz, Germany
+      - mail: david@schochastics.net
+      - icon: home
+        text: mr.schochastics.net
+        href: https://mr.schochastics.net
+      - icon: github
+        text: schochastics
+        href: https://github.com/schochastics
+      - icon: twitter
+        text: "@schochastics"
+        href: https://twitter.com/schochastics
+  - name: Programming
+    items:
+      - icon: code
+        text: R
+        stars: 5
+      - icon: code
+        text: Bash
+        stars: 4
+      - icon: code
+        text: Python
+        stars: 3
+      - icon: code
+        text: JavaScript
+        stars: 3
+  - name: Technologies
+    items:
+      - icon: code-branch
+        text: Git
+        nowrap: true # no newline
+      - icon: file-code
+        text: Quarto
+        nowrap: true
+      - icon: file-code
+        text: Rmarkdown
+      - icon: html5
+        text: HTML
+        nowrap: true
+      - icon: css3-alt
+        text: CSS
+        nowrap: true
+execute:
+  echo: false
+keep-tex: true
+---
+
+
+```{r}
+#| label: cvevents
+cvevents <- function(tbl, when, what, where, details) {
+
+    command_start <- "\\cvevent"
+
+    res <- paste0(
+        command_start, "{", tbl[[when]], "}", 
+        "{", tbl[[what]], "}",
+        "{", tbl[[where]], "}")
+    
+    tbl[[details]] <- sapply(tbl[[details]], function(x) paste0(x, collapse = ", "))
+    res <- paste0(res, "{",tbl[[details]],"}")
+    cat(res, sep = "\n")
+}
+```
+
+# Status
+
+Transparent Social Analytics, Ph.D. in Computer Science, doing random things in R
+
+# Experience
+
+
+```{r}
+#| label: experience
+#| output: asis
+tibble::tribble(
+    ~role, ~institution, ~dates, ~details, ~tasks,
+    "Team Lead", "GESIS", "03/2022 - Present",
+    "Transparent Social Analytics, Department of Computational Social Science", c("Project to build an Open Science platform with reusable code and tutorials", "Implementation of tools to enhance reproducibility in R"),
+    "Presidential Fellow", "Univ. of Manchester", "2018 - 2022",
+    "Sociology Department", c("Research on Disinformation on Social Media", "Analyses of large scale and unstructured data sets with R and Bash"),
+    "Post Doctoral Researcher", "ETH Zurich", "11/2017 - 2018", "Chair of Social Networks", c("Developing new methods to analyze social networks", "Gathering and analyzing large datsets from Social Media APIs"),
+    "Post Doctoral Researcher", "University of Konstanz", "10/2015 - 2017", "Department of Computer & Information Science", c("Developing new methods to analyze social networks", "Webscraping and harmonizing a large corpus of football data"),
+    "Ph.D. Candidate", "University of Konstanz", "11/2012 - 2015", "Department of Computer & Information Science", c("Developing new methods to analyze social networks", "Implementing methods in libraries")
+) |>
+    cvevents(when = "dates", what = "role", where = "institution", details = "tasks")
+```
+
+# Education
+
+```{r }
+#| label: education
+#| output: asis
+tibble::tribble(
+    ~degree, ~uni, ~loc, ~dates, ~details,
+    "Ph.D. in Computer Science", "University of Konstanz", "Konstanz, Germany", "11/2012 - 2015", c("Thesis: A Positional Approach for Network Centrality", "Developed and implemented new methods to assess network centrality"),
+    "Diploma in Business Mathematics", "KIT", "Karlsruhe, Germany", "09/2006 - 2012", c("Thesis: Modularity Maximization", "Implementation and comparison of different clustering algorithms using Matlab")
+) |>
+    cvevents(when = "dates", what = "degree", where = "uni", details = "details")
+```

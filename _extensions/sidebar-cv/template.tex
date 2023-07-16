@@ -1,0 +1,425 @@
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2015 Jan Küster
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+%============================================================================%
+%
+%	DOCUMENT DEFINITION
+%
+%============================================================================%
+
+%we use article class because we want to fully customize the page and dont use a cv template
+\documentclass[10pt,A4]{article}	
+
+
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+
+%we use utf8 since we want to build from any machine
+\usepackage[utf8]{inputenc}		
+
+%----------------------------------------------------------------------------------------
+%	LOGIC
+%----------------------------------------------------------------------------------------
+
+% provides \isempty test
+\usepackage{xifthen}
+
+%----------------------------------------------------------------------------------------
+%	FONT
+%----------------------------------------------------------------------------------------
+
+\usepackage{$cvfont$}
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+\usepackage{moresize}		
+\usepackage{fontawesome5}
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+\usepackage[a4paper]{geometry}		
+\geometry{top=1cm, bottom=-.6cm, left=0.4cm, right=1cm} 	
+\setlength{\headheight}{-5pt}		
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{multicol}			
+\usepackage{multirow}
+\usepackage{array}
+
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+
+%----------------------------------------------------------------------------------------
+%	Color DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{transparent}
+\usepackage{color}
+
+%accent color
+\definecolor{complcol}{HTML}{$color.accent$}
+
+%dark background color
+\definecolor{bgcol}{HTML}{$color.bgdark$}
+
+%light background / accent color
+\definecolor{softcol}{HTML}{$color.bglight$}
+
+\definecolor{sectcol}{HTML}{$color.main$}
+
+
+%Package for links, must be the last package used
+\usepackage[hidelinks]{hyperref}
+
+%============================================================================%
+%
+%
+%	DEFINITIONS
+%
+%
+%============================================================================%
+
+% returns minipage width minus two times \fboxsep
+% to keep padding included in width calculations
+\newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
+	
+
+%----------------------------------------------------------------------------------------
+% 	ARROW GRAPHICS in Tikz
+%----------------------------------------------------------------------------------------
+
+% a six pointed arrow poiting to the left
+\newcommand{\tzlarrow}{(0,0) -- (0.2,0) -- (0.3,0.2) -- (0.2,0.4) -- (0,0.4) -- (0.1,0.2) -- cycle;}	
+
+% include the left arrow into a tikz picture
+% param1: fill color
+%
+\newcommand{\larrow}[1]
+{\begin{tikzpicture}[scale=0.58]
+	 \filldraw[fill=#1!100,draw=#1!100!black]  \tzlarrow
+ \end{tikzpicture}
+}
+
+% a six pointed arrow poiting to the right
+\newcommand{\tzrarrow}{ (0,0.2) -- (0.1,0) -- (0.3,0) -- (0.2,0.2) -- (0.3,0.4) -- (0.1,0.4) -- cycle;}
+
+% include the right arrow into a tikz picture
+% param1: fill color
+%
+\newcommand{\rarrow}
+{\begin{tikzpicture}[scale=0.7]
+	\filldraw[fill=sectcol!100,draw=sectcol!100!black] \tzrarrow
+ \end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	custom sections
+%----------------------------------------------------------------------------------------
+
+% create a coloured box with arrow and title as cv section headline
+% param 1: section title
+%
+\newcommand{\cvsection}[1]
+{
+\colorbox{sectcol}{\mystrut \makebox[1\mpwidth][l]{
+\larrow{bgcol} \hspace{-8pt} \larrow{bgcol} \hspace{-8pt} \larrow{bgcol} \textbf{\textcolor{white}{\uppercase{#1}}}\hspace{4pt}
+}}\\
+}
+
+% create a coloured arrow with title as cv meta section section
+% param 1: meta section title
+%
+\newenvironment{metasection}[1] {
+	\vspace{6pt}
+	\begin{center}
+		\textcolor{white}{\large{\uppercase{#1}}}\\
+	\normalsize
+	\parbox{0.7\mpwidth}{\textcolor{white}	\hrule}
+}{\end{center}}
+
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+
+% creates a stretched box as cv entry headline followed by some paragraphs about 
+% the work you did
+% param 1:	event time i.e. 2014 or 2011-2014 etc.
+% param 2:	event name (what did you do?)
+% param 3:	institution (where did you work / study)
+% param 4:	list of paragraphs outlining your contributions, see example usage below
+%
+\newcommand{\cvevent}[4]
+{
+\vspace{6pt}
+	\begin{tabular*}{1\mpwidth}{p{0.55\mpwidth}  x{0.42\mpwidth}}
+ 	\textcolor{black}{\textbf{#2}} & \textcolor{complcol}{#3}, \textcolor{bgcol}{#1} 
+	\end{tabular*}
+\vspace{0pt}
+\textcolor{softcol}{\hrule}
+\vspace{6pt}
+	\cvlist {#4}
+\vspace{-6pt}
+}
+
+% formats a list of strings with variable length for use in `\cvevent`
+% param 1: a list of strings outlining your contributions
+\newcommand{\cvlist}[1] {
+    \foreach \listitem in {#1}
+    {
+        \begin{tabular*}
+            {1\mpwidth}{p{1.2\mpwidth}}
+            \parbox{1\mpwidth}{\larrow{softcol} \listitem}
+            \vspace{3pt}
+        \end{tabular*}
+    }
+}
+
+% creates a stretched box as 
+\newcommand{\cveventmeta}[2]
+{
+	\mbox{\mystrut \hspace{87pt}\textit{#1}}\\
+	#2
+}
+
+%----------------------------------------------------------------------------------------
+% CUSTOM STRUT FOR EMPTY BOXES
+%----------------------------------------- -----------------------------------------------
+\newcommand{\mystrut}{\rule[-.3\baselineskip]{0pt}{\baselineskip}}
+
+%----------------------------------------------------------------------------------------
+% CUSTOM LOREM IPSUM
+%----------------------------------------------------------------------------------------
+
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+%----------------------------------------------------------------------------------------
+%	ICON-SET EMBEDDING
+%---------------------------------------------------------------------------------------- 
+
+% at this point we simplify our icon-embedding by simply referring to a set of png images.
+% if you find a good way of including svg without conflicting with other packages you can
+% replace this part
+\newcommand{\icon}[3]{\makebox(#2, #2){\textcolor{#3}{\faIcon{#1}}}}	%icon shortcut
+\newcommand{\icontext}[4]{ 						%icon with text shortcut
+	\vcenteredhbox{\icon{#1}{#2}{#4}} \vcenteredhbox{\textcolor{#4}{#3}}
+}
+\newcommand{\iconhref}[5]{ 						%icon with website url
+    \vcenteredhbox{\icon{#1}{#2}{#5}} \href{#4}{\textcolor{#5}{#3}}
+}
+
+\newcommand{\iconemail}[5]{ 						%icon with email link
+    \vcenteredhbox{\icon{#1}{#2}{#5}} \href{mailto:#4}{\textcolor{#5}{#3}}
+}
+
+\newcommand{\starrating}[1]{
+	\foreach \n in {1,...,#1}{\icon{star}{12}{complcol}}
+}
+
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+\begin{document}
+\fcolorbox{white}{white}{%
+	\begin{minipage}[c][0.95\textheight][t]{0.69\linewidth}
+
+
+		%---------------------------------------------------------------------------------------
+		%	TITLE HEADLINE
+		%----------------------------------------------------------------------------------------
+		\vspace{-3pt}
+
+		\colorbox{bgcol}{\makebox[\mpwidth][c]{\HUGE{\textcolor{white}{\uppercase{$author$}} } \textcolor{sectcol}{\rule[-1mm]{1mm}{0.9cm}} \HUGE{\textcolor{white}{\uppercase{Resume}} } }}
+
+		%----------------------------------------------------------------------------------------
+		%	HEADER IMAGE
+		%----------------------------------------------------------------------------------------
+
+		\includegraphics[trim= $cvimage.trim.left$ $cvimage.trim.bottom$
+			$cvimage.trim.right$ $cvimage.trim.top$, clip ,width=\linewidth]{$cvimage.file$}
+		%trimming relative to image size
+
+		%---------------------------------------------------------------------------------------
+		%	SUMMARY
+		%----------------------------------------------------------------------------------------
+		\transparent{0.85}%
+		\vspace{-130pt}
+		\hspace{0.4\linewidth}
+		\colorbox{bgcol}{
+			\parbox{0.5\linewidth}{
+				\transparent{1}%
+				\begin{center}
+					\larrow{sectcol}\larrow{sectcol}\textcolor{white}{$tagline$}
+				\end{center}
+			}
+		}
+		\vspace{60pt}
+
+		%============================================================================%
+		%
+		%	CV SECTIONS AND EVENTS (MAIN CONTENT)
+		%
+		%============================================================================%
+		$body$
+	\end{minipage}}%
+\fcolorbox{white}{sectcol}{\begin{minipage}[c][0.95\textheight][t]{0.33\linewidth}
+		$for(cvmeta)$
+		\begin{metasection}{$cvmeta.name$}
+
+			$for(cvmeta.items)$
+			$if(cvmeta.items.mail)$
+			\iconemail{paper-plane}{12}{$cvmeta.items.mail$}{$cvmeta.items.mail$}{white}\\[6pt]
+			$elseif(cvmeta.items.href)$
+			\iconhref{$cvmeta.items.icon$}{12}{$cvmeta.items.text$}{$cvmeta.items.href$}{white}\\[6pt]
+			$elseif(cvmeta.items.stars)$
+			\icontext{$cvmeta.items.icon$}{12}{$cvmeta.items.text$}{white}\\
+			\starrating{$cvmeta.items.stars$} \\[6pt]
+			$elseif(cvmeta.items.nowrap)$
+			\icontext{$cvmeta.items.icon$}{12}{$cvmeta.items.text$}{white}
+			$else$
+			\icontext{$cvmeta.items.icon$}{12}{$cvmeta.items.text$}{white}\\[6pt]
+			$endif$
+			$endfor$
+		\end{metasection}
+		$endfor$
+
+		% \begin{metasection}{Contact}
+
+		% 	\icontext{MapMarker}{12}{Bremen, Germany}{white}\\[6pt]
+		% 	\icontext{MobilePhone}{12}{+49 176 313 *** **}{white}\\[6pt]
+		% 	\iconemail{Send}{12}{info@jankuester.com}{info@jankuester.com}{white}\\[6pt]
+		% 	\iconhref{MousePointer}{12}{http://jankuester.com/}{www.jankuester.com}{white}\\[6pt]
+		% 	\iconhref{Github}{12}{https://github.com/jankapunkt}{https://github.com/jankapunkt}{white}\\[6pt]
+		% 	\iconhref{Twitter}{12}{@Kuester\_Jan}{https://twitter.com/kuester_jan?lang=en}{white}\\[6pt]
+
+		% \end{metasection}
+
+		% %----------------------------------------------------------------------------------------
+		% %	META SECTION
+		% %----------------------------------------------------------------------------------------
+
+		% \begin{metasection}{Fields}
+
+		% 	\icontext{Code}{12}{Software Development}{white}\\
+		% 	\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\\[6pt]
+
+		% 	\icontext{CommentsO}{12}{Consulting}{white}\\
+		% 	\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
+
+		% 	\icontext{CodeFork}{12}{Project Management}{white}\\
+		% 	\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{complcol}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\icon{Star}{12}{white}\\[6pt]
+
+
+		% \end{metasection}
+
+
+		% \begin{metasection}{Technologies}
+
+		% 	\textcolor{white}{
+		% 		\icontext{Code}{12}{JavaScript}{white} \\[6pt]
+		% 		\icontext{Code}{12}{Meteor}{white} \\[6pt]
+		% 		\icontext{Fire}{12}{Blaze}{white} \\[6pt]
+		% 		\icontext{Database}{12}{MongoDB}{white} \\[6pt]
+		% 		\icontext{CodeFork}{12}{Git}{white} \\[6pt]
+		% 	}
+		% \end{metasection}
+
+		% \begin{metasection}{Tools}
+
+		% 	\textcolor{white}{
+		% 		\icontext{Code}{12}{Webstorm}{white} \icontext{CodeFork}{12}{SourceTree}{white}\\[6pt]
+		% 		\icontext{Terminal}{12}{Terminal}{white}  \icontext{PaintBrush}{12}{Inkscape}{white}\icontext{Cube}{12}{Blender}{white}
+		% 	}
+		% \end{metasection}
+
+		% \begin{metasection}{Activities}
+
+		% 	\textcolor{white}{\LARGE{\icon{Gamepad}{24}{white} \icon{Headphones}{24}{white}  \icon{Bicycle}{24}{white}}}
+		% \end{metasection}
+
+		% \begin{metasection}{Operating Systems}
+
+		% 	\textcolor{white}{\LARGE{\icon{Linux}{24}{white} \icon{Apple}{24}{white}  \icon{Windows}{24}{white}}}
+
+		% \end{metasection}
+
+		%---------------------------------------------------------------------------------------
+		%	QR CODE (optional)
+		%----------------------------------------------------------------------------------------
+
+		\vspace{12pt}
+		% \begin{center}
+		% 	\includegraphics[width=0.35\mpwidth]{qrcode}
+		% \end{center}
+
+	\end{minipage}}
+
+%-------------------------------------------------------------------------------------------------
+%	ARTIFICIAL FOOTER (fancy footer cannot exceed linewidth) 
+%--------------------------------------------------------------------------------------------------
+
+\null
+\vspace*{\fill}
+\hspace{-0.25\linewidth}\colorbox{bgcol}{\makebox[1.5\linewidth][c]{\mystrut \small \textcolor{white}{} \textcolor{white}{}}}\\[-6pt]
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT END
+%
+%
+%
+%============================================================================%
+\end{document}
